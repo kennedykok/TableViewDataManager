@@ -25,12 +25,12 @@
 
 import UIKit
 
-public class TableViewDatePickerItem: TableViewFormItem {
+open class TableViewDatePickerItem: TableViewFormItem {
     
-    public weak var dateTimeItem: TableViewDateTimeItem?
+    open weak var dateTimeItem: TableViewDateTimeItem?
     
     // MARK: Handlers
     //
-    public var changeHandler: ((section: TableViewSection, item: TableViewDatePickerItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
+    open var changeHandler: ((_ section: TableViewSection, _ item: TableViewDatePickerItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
 }
 

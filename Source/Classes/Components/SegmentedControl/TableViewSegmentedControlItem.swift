@@ -25,14 +25,14 @@
 
 import UIKit
 
-public class TableViewSegmentedControlItem: TableViewFormItem {
+open class TableViewSegmentedControlItem: TableViewFormItem {
    
-    public var value: Int?
-    public var items: [AnyObject]?
+    open var value: Int?
+    open var items: [AnyObject]?
     
     // MARK: Handlers
     //
-    public var changeHandler: ((section: TableViewSection, item: TableViewSegmentedControlItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
+    open var changeHandler: ((_ section: TableViewSection, _ item: TableViewSegmentedControlItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
 
     // MARK: Instance Lifecycle
     //

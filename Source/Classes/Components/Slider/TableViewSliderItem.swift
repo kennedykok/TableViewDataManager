@@ -25,13 +25,13 @@
 
 import UIKit
 
-public class TableViewSliderItem: TableViewFormItem {
+open class TableViewSliderItem: TableViewFormItem {
    
-    public var value: Float = 0
+    open var value: Float = 0
     
     // MARK: Handlers
     //
-    public var changeHandler: ((section: TableViewSection, item: TableViewSliderItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
+    open var changeHandler: ((_ section: TableViewSection, _ item: TableViewSliderItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
     
     // MARK: Instance Lifecycle
     //

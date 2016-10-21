@@ -25,31 +25,31 @@
 
 import UIKit
 
-public class TableViewTextFieldCell: TableViewFormCell, UITextFieldDelegate {
+open class TableViewTextFieldCell: TableViewFormCell, UITextFieldDelegate {
 
     // Public variables
     //
-    public override var item: TableViewItem! { get { return textItem } set { textItem = newValue as! TableViewTextFieldItem } }
+    open override var item: TableViewItem! { get { return textItem } set { textItem = newValue as! TableViewTextFieldItem } }
     
     // Private variables
     //
-    private var textItem: TableViewTextFieldItem!
+    fileprivate var textItem: TableViewTextFieldItem!
     
     // Interface builder outlets
     //
-    @IBOutlet public private(set) var textField: UITextField!
+    @IBOutlet open fileprivate(set) var textField: UITextField!
 
-    public override func cellDidLoad() {
+    open override func cellDidLoad() {
         super.cellDidLoad()
-        self.textField.addTarget(self, action: Selector("textFieldDidChange:"), forControlEvents: .EditingChanged)
+        self.textField.addTarget(self, action: #selector(TableViewTextFieldCell.textFieldDidChange(_:)), for: .editingChanged)
     }
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
         self.textField.inputAccessoryView = self.textItem.showsActionBar ? self.actionBar : nil
         self.textField.text = self.textItem.value
         self.textField.placeholder = self.textItem.placeholder
-        self.textField.secureTextEntry = self.textItem.secureTextEntry
+        self.textField.isSecureTextEntry = self.textItem.secureTextEntry
         self.textField.autocapitalizationType = self.textItem.autocapitalizationType
         self.textField.autocorrectionType = self.textItem.autocorrectionType
         self.textField.spellCheckingType = self.textItem.spellCheckingType
@@ -59,64 +59,64 @@ public class TableViewTextFieldCell: TableViewFormCell, UITextFieldDelegate {
         self.textField.enablesReturnKeyAutomatically = self.textItem.enablesReturnKeyAutomatically
     }
        
-    public override func responder() -> UIResponder? {
+    open override func responder() -> UIResponder? {
         return self.textField
     }
     
     // MARK: Text field delegate
     //
-    public func textFieldDidChange(textField: UITextField) {
+    open func textFieldDidChange(_ textField: UITextField) {
         self.textItem.value = textField.text
         if let changeHandler = self.textItem.changeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            changeHandler(section: self.section, item: self.textItem, tableView: tableView, indexPath: indexPath)
+            changeHandler(self.section, self.textItem, tableView, indexPath)
         }
     }
     
-    public func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    open func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if let _ = self.indexPathForNextResponder() {
-            textField.returnKeyType = .Next
+            textField.returnKeyType = .next
         } else {
             textField.returnKeyType = self.textItem.returnKeyType
         }
         self.updateActionBarNavigationControl()
         if let editingHandler = self.textItem.editingHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            editingHandler(section: self.section, item: self.textItem, tableView: tableView, indexPath: indexPath, status: .WillBeginEditing)
+            editingHandler(self.section, self.textItem, tableView, indexPath, .willBeginEditing)
         }
         return true
     }
     
-    public func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+    open func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if let editingHandler = self.textItem.editingHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            editingHandler(section: self.section, item: self.textItem, tableView: tableView, indexPath: indexPath, status: .DidEndEditing)
+            editingHandler(self.section, self.textItem, tableView, indexPath, .didEndEditing)
         }
         return true
     }
     
-    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let returnKeyHandler = self.textItem.returnKeyHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            returnKeyHandler(section: self.section, item: self.textItem, tableView: tableView, indexPath: indexPath)
+            returnKeyHandler(self.section, self.textItem, tableView, indexPath)
         }
         if let editingHandler = self.textItem.editingHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            editingHandler(section: self.section, item: self.textItem, tableView: tableView, indexPath: indexPath, status: .DidEndEditing)
+            editingHandler(self.section, self.textItem, tableView, indexPath, .didEndEditing)
         }
         if let _ = self.indexPathForNextResponder() {
             self.endEditing(true)
             return true
         }
-        if let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) {
+        if let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath, let cell = tableView.cellForRow(at: indexPath as IndexPath) {
             cell.becomeFirstResponder()
         }
         return true
     }
     
-    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    open func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var shouldChange = true
         if let charactersLimit = self.textItem.charactersLimit {
             let newLength = textField.text!.characters.count + string.characters.count - range.length
             shouldChange = newLength <= charactersLimit
         }
         if let changeCharacterInRangeHandler = self.textItem.changeCharacterInRangeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            shouldChange = changeCharacterInRangeHandler(section: self.section, item: self.textItem, tableView: tableView, indexPath: indexPath, range: range, replacementString: string)
+            shouldChange = changeCharacterInRangeHandler(self.section, self.textItem, tableView, indexPath, range, string)
         }
         return shouldChange
     }

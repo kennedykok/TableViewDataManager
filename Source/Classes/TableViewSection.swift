@@ -26,24 +26,24 @@
 import UIKit
 
 public enum TableViewSectionDisplayStatus {
-    case WillDisplay
-    case DidEndDisplaying
+    case willDisplay
+    case didEndDisplaying
 }
 
-public class TableViewSection {
+open class TableViewSection {
     
     // MARK: Variables
     //
-    public var items: [TableViewItem] = []
-    public var headerTitle: String?
-    public var footerTitle: String?
-    public var headerView: UIView?
-    public var footerView: UIView?
-    public var style: TableViewCellStyle?
-    public var indexTitle: String?
-    public var configurationHandler: ((tableViewCell: TableViewCell) -> (Void))?
-    public var headerDisplayHandler: ((section: TableViewSection, tableView: UITableView, indexPath: NSIndexPath, view: UIView, status: TableViewSectionDisplayStatus) -> (Void))?
-    public var footerDisplayHandler: ((section: TableViewSection, tableView: UITableView, indexPath: NSIndexPath, view: UIView, status: TableViewSectionDisplayStatus) -> (Void))?
+    open var items: [TableViewItem] = []
+    open var headerTitle: String?
+    open var footerTitle: String?
+    open var headerView: UIView?
+    open var footerView: UIView?
+    open var style: TableViewCellStyle?
+    open var indexTitle: String?
+    open var configurationHandler: ((_ tableViewCell: TableViewCell) -> (Void))?
+    open var headerDisplayHandler: ((_ section: TableViewSection, _ tableView: UITableView, _ indexPath: IndexPath, _ view: UIView, _ status: TableViewSectionDisplayStatus) -> (Void))?
+    open var footerDisplayHandler: ((_ section: TableViewSection, _ tableView: UITableView, _ indexPath: IndexPath, _ view: UIView, _ status: TableViewSectionDisplayStatus) -> (Void))?
     
     // MARK: Lifecycle
     //    

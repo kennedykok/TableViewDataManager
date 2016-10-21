@@ -25,30 +25,30 @@
 
 import UIKit
 
-public class TableViewSegmentedControlCell: TableViewFormCell {
+open class TableViewSegmentedControlCell: TableViewFormCell {
 
     // Public variables
     //
-    public override var item: TableViewItem! { get { return segmentedControlItem } set { segmentedControlItem = newValue as! TableViewSegmentedControlItem } }
+    open override var item: TableViewItem! { get { return segmentedControlItem } set { segmentedControlItem = newValue as! TableViewSegmentedControlItem } }
     
     // Private variables
     //
-    private var segmentedControlItem: TableViewSegmentedControlItem!
+    fileprivate var segmentedControlItem: TableViewSegmentedControlItem!
     
     // Interface builder outlets
     //
-    @IBOutlet public private(set) var segmentedControl: UISegmentedControl!
+    @IBOutlet open fileprivate(set) var segmentedControl: UISegmentedControl!
 
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
         self.segmentedControl.removeAllSegments()
         if let items = self.segmentedControlItem.items, let selectedSegmentIndex = self.segmentedControlItem.value {
-            for (index, item) in items.enumerate() {
+            for (index, item) in items.enumerated() {
                 switch item {
                 case is String:
-                    self.segmentedControl.insertSegmentWithTitle(item as? String, atIndex: index, animated: false)
+                    self.segmentedControl.insertSegment(withTitle: item as? String, at: index, animated: false)
                 case is UIImage:
-                    self.segmentedControl.insertSegmentWithImage(item as? UIImage, atIndex: index, animated: false)
+                    self.segmentedControl.insertSegment(with: item as? UIImage, at: index, animated: false)
                 default:
                     continue
                 }
@@ -59,11 +59,11 @@ public class TableViewSegmentedControlCell: TableViewFormCell {
     
     // MARK: Actions
     //
-    @IBAction func segmentedControlValueChanged(sender: UISegmentedControl!) {
+    @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl!) {
         self.segmentedControlItem.value = sender.selectedSegmentIndex
         guard let changeHandler = self.segmentedControlItem.changeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath else {
             return
         }
-        changeHandler(section: self.section, item: self.segmentedControlItem, tableView: tableView, indexPath: indexPath)
+        changeHandler(self.section, self.segmentedControlItem, tableView, indexPath)
     }
 }

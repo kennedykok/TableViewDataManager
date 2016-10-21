@@ -25,11 +25,11 @@
 
 import UIKit
 
-public class TableViewActionBar: UIToolbar {
+open class TableViewActionBar: UIToolbar {
 
-    public var navigationControl: UISegmentedControl!
-    public var navigationHandler: ((index: Int) -> (Void))?
-    public var doneHandler: ((Void) -> (Void))?
+    open var navigationControl: UISegmentedControl!
+    open var navigationHandler: ((_ index: Int) -> (Void))?
+    open var doneHandler: ((Void) -> (Void))?
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,8 +41,8 @@ public class TableViewActionBar: UIToolbar {
         self.commonInit()
     }
     
-    public required init(navigationHandler: ((index: Int) -> (Void)), doneHandler: ((Void) -> (Void))) {
-        super.init(frame: CGRectNull)
+    public required init(navigationHandler: @escaping ((_ index: Int) -> (Void)), doneHandler: @escaping ((Void) -> (Void))) {
+        super.init(frame: CGRect.null)
         self.navigationHandler = navigationHandler
         self.doneHandler = doneHandler
         self.commonInit()
@@ -50,37 +50,37 @@ public class TableViewActionBar: UIToolbar {
     
     // MARK: Private methods
     //
-    private func commonInit() {
+    fileprivate func commonInit() {
         self.sizeToFit()
         self.navigationControl = {
             let control = UISegmentedControl(items: ["Previous", "Next"])
-            control.momentary = true
-            control.setDividerImage(UIImage(), forLeftSegmentState: .Normal, rightSegmentState: .Normal, barMetrics: .Default)
-            control.addTarget(self, action: Selector("previousNextPressed:"), forControlEvents: .ValueChanged)
-            control.setWidth(40, forSegmentAtIndex: 0)
-            control.setWidth(40, forSegmentAtIndex: 1)
-            control.setContentOffset(CGSize(width: -4, height: 0), forSegmentAtIndex: 0)
-            control.setImage(UIImage(named: "TableViewDataManager.bundle/UIButtonBarArrowLeft", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil), forSegmentAtIndex: 0)
-            control.setImage(UIImage(named: "TableViewDataManager.bundle/UIButtonBarArrowRight", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil), forSegmentAtIndex: 1)
-            control.setBackgroundImage(UIImage(named: "TableViewDataManager.bundle/Transparent", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil), forState: .Normal, barMetrics: .Default)
+            control.isMomentary = true
+            control.setDividerImage(UIImage(), forLeftSegmentState: UIControlState(), rightSegmentState: UIControlState(), barMetrics: .default)
+            control.addTarget(self, action: #selector(TableViewActionBar.previousNextPressed(_:)), for: .valueChanged)
+            control.setWidth(40, forSegmentAt: 0)
+            control.setWidth(40, forSegmentAt: 1)
+            control.setContentOffset(CGSize(width: -4, height: 0), forSegmentAt: 0)
+            control.setImage(UIImage(named: "TableViewDataManager.bundle/UIButtonBarArrowLeft", in: Bundle(for: type(of: self)), compatibleWith: nil), forSegmentAt: 0)
+            control.setImage(UIImage(named: "TableViewDataManager.bundle/UIButtonBarArrowRight", in: Bundle(for: type(of: self)), compatibleWith: nil), forSegmentAt: 1)
+            control.setBackgroundImage(UIImage(named: "TableViewDataManager.bundle/Transparent", in: Bundle(for: type(of: self)), compatibleWith: nil), for: UIControlState(), barMetrics: .default)
             return control
         }()
         self.items = [
             UIBarButtonItem(customView: self.navigationControl),
-            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: Selector("doneButtonPressed:"))
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(TableViewActionBar.doneButtonPressed(_:)))
         ]
     }
     
     // MARK: Action handlers
     //
-    public func previousNextPressed(segmentedControl: UISegmentedControl) {
+    open func previousNextPressed(_ segmentedControl: UISegmentedControl) {
         if let navigationHandler = self.navigationHandler {
-            navigationHandler(index: segmentedControl.selectedSegmentIndex)
+            navigationHandler(segmentedControl.selectedSegmentIndex)
         }
     }
     
-    public func doneButtonPressed(sender: AnyObject) {
+    open func doneButtonPressed(_ sender: AnyObject) {
         if let doneHandler = self.doneHandler {
             doneHandler()
         }

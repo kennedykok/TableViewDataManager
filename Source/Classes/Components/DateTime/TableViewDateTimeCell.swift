@@ -25,58 +25,58 @@
 
 import UIKit
 
-public class TableViewDateTimeCell: TableViewFormCell {
+open class TableViewDateTimeCell: TableViewFormCell {
     
     // MARK: Public variables
     //
-    public override var item: TableViewItem! { get { return dateTimeItem } set { dateTimeItem = newValue as! TableViewDateTimeItem } }
+    open override var item: TableViewItem! { get { return dateTimeItem } set { dateTimeItem = newValue as! TableViewDateTimeItem } }
     
     // MARK: Private variables
     //
-    private var dateTimeItem: TableViewDateTimeItem!
+    fileprivate var dateTimeItem: TableViewDateTimeItem!
     
-    private lazy var datePickerItem: TableViewDatePickerItem = TableViewDatePickerItem()
+    fileprivate lazy var datePickerItem: TableViewDatePickerItem = TableViewDatePickerItem()
     
     // MARK: View lifecycle
     //
-    public override func cellDidLoad() {
+    open override func cellDidLoad() {
         super.cellDidLoad()
-        self.item.selectionHandler = { (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void) in
+        self.item.selectionHandler = { (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: IndexPath) -> (Void) in
             let dateTimeItem = item as! TableViewDateTimeItem
-            guard let indexOfItem = section.items.indexOf(item) else {
+            guard let indexOfItem = section.items.index(of: item) else {
                 return
             }
-            let newItemIndexPath = NSIndexPath(forRow: indexOfItem + 1, inSection: indexPath.section)
-            dateTimeItem.selected = newItemIndexPath.row < section.items.count && section.items[newItemIndexPath.row] is TableViewDatePickerItem
+            let newItemIndexPath = IndexPath(row: indexOfItem + 1, section: (indexPath as NSIndexPath).section)
+            dateTimeItem.selected = (newItemIndexPath as NSIndexPath).row < section.items.count && section.items[(newItemIndexPath as NSIndexPath).row] is TableViewDatePickerItem
             if dateTimeItem.selected {
-                section.items.removeAtIndex(newItemIndexPath.row)
-                tableView.deleteRowsAtIndexPaths([newItemIndexPath], withRowAnimation: .Top)
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                section.items.remove(at: (newItemIndexPath as NSIndexPath).row)
+                tableView.deleteRows(at: [newItemIndexPath], with: .top)
+                tableView.deselectRow(at: indexPath, animated: true)
             } else {
-                section.items.insert(self.datePickerItem, atIndex: newItemIndexPath.row)
-                tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newItemIndexPath.row, inSection: indexPath.section)], withRowAnimation: .Fade)
+                section.items.insert(self.datePickerItem, at: (newItemIndexPath as NSIndexPath).row)
+                tableView.insertRows(at: [IndexPath(row: (newItemIndexPath as NSIndexPath).row, section: (indexPath as NSIndexPath).section)], with: .fade)
             }
         }
     }
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
-        self.selectionStyle = .Default
+        self.selectionStyle = .default
         self.setSelected(self.dateTimeItem.selected, animated: false)
         self.datePickerItem.dateTimeItem = self.dateTimeItem
-        self.datePickerItem.changeHandler = { [unowned self] (section: TableViewSection, item: TableViewDatePickerItem, tableView: UITableView, indexPath: NSIndexPath) in
+        self.datePickerItem.changeHandler = { [unowned self] (section: TableViewSection, item: TableViewDatePickerItem, tableView: UITableView, indexPath: IndexPath) in
             self.updateDetailLabelText()
         }
         updateDetailLabelText()
     }
     
-    private func updateDetailLabelText() {
+    fileprivate func updateDetailLabelText() {
         guard let detailTextLabel = self.detailTextLabel else {
             return
         }
         
         if let value = self.dateTimeItem.value {
-            detailTextLabel.text = self.dateTimeItem.dateFormatter.stringFromDate(value)
+            detailTextLabel.text = self.dateTimeItem.dateFormatter.string(from: value)
         } else {
             detailTextLabel.text = self.dateTimeItem.placeholder
         }

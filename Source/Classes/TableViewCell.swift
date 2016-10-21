@@ -27,40 +27,40 @@ import UIKit
 
 let kYTMTableViewCellPadding: Float = 15
 
-public class TableViewCell: UITableViewCell {
+open class TableViewCell: UITableViewCell {
     
     // MARK: Public variables
     //
-    public var item: TableViewItem!
-    public var section: TableViewSection!
-    public var indexPath: NSIndexPath?
-    public var cellLoaded = false
-    public var style: TableViewCellStyle?
-    public var backgroundImageView: UIImageView?
-    public var selectedBackgroundImageView: UIImageView?
-    public var actionBar: TableViewActionBar?
-    public var tableViewDataManager: TableViewDataManager!
-    public var type: TableViewCellType {
-        guard let indexPath = self.indexPath, section = self.section else {
-            return .Any
+    open var item: TableViewItem!
+    open var section: TableViewSection!
+    open var indexPath: IndexPath?
+    open var cellLoaded = false
+    open var style: TableViewCellStyle?
+    open var backgroundImageView: UIImageView?
+    open var selectedBackgroundImageView: UIImageView?
+    open var actionBar: TableViewActionBar?
+    open var tableViewDataManager: TableViewDataManager!
+    open var type: TableViewCellType {
+        guard let indexPath = self.indexPath, let section = self.section else {
+            return .any
         }
-        switch (indexPath.row, section.items.count) {
+        switch ((indexPath as NSIndexPath).row, section.items.count) {
         case let (row, count) where row == 0 && count == 1:
-            return .Single
+            return .single
         case let (row, count) where row == 0 && count > 1:
-            return .First
+            return .first
         case let (row, count) where row > 0 && row < count - 1 && count > 2:
-            return .Middle
+            return .middle
         case let (row, count) where row == count - 1 && count > 1:
-            return .Last
+            return .last
         default:
-            return .Any
+            return .any
         }
     }
 
     // MARK: Cell view lifecycle
     //
-    public func cellDidLoad() {
+    open func cellDidLoad() {
         if (self.style?.hasCustomBackgroundImage() != nil || self.style?.hasCustomBackgroundColor() != nil) {
             self.addBackgroundImage()
         }
@@ -72,31 +72,31 @@ public class TableViewCell: UITableViewCell {
         self.actionBar = TableViewActionBar(navigationHandler: { [weak self] (index: Int) -> (Void) in
             if let strongSelf = self, let tableView = strongSelf.tableViewDataManager.tableView, let indexPath = strongSelf.indexPath {
                 if let indexPath = index == 0 ? strongSelf.indexPathForPreviousResponder() : strongSelf.indexPathForNextResponder() {
-                    var cell = tableView.cellForRowAtIndexPath(indexPath) as? TableViewCell
+                    var cell = tableView.cellForRow(at: indexPath) as? TableViewCell
                     if cell == nil {
-                        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Top, animated: true)
+                        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                     }
-                    cell = tableView.cellForRowAtIndexPath(indexPath) as? TableViewCell
+                    cell = tableView.cellForRow(at: indexPath) as? TableViewCell
                     if let cell = cell, let responder = cell.responder() {
                         responder.becomeFirstResponder()
                     }
                 }
                 
                 if let actionBarButtonTapHandler = strongSelf.item.actionBarButtonTapHandler {
-                    actionBarButtonTapHandler(section: strongSelf.section, item: strongSelf.item, tableView: tableView, indexPath: indexPath, button: index == 0 ? .Previous : .Next)
+                    actionBarButtonTapHandler(strongSelf.section, strongSelf.item, tableView, indexPath, index == 0 ? .previous : .next)
                 }
             }
         }, doneHandler: { [weak self] in
             if let strongSelf = self, let tableView = strongSelf.tableViewDataManager.tableView, let indexPath = strongSelf.indexPath {
                 strongSelf.endEditing(true)
                 if let actionBarButtonTapHandler = strongSelf.item.actionBarButtonTapHandler {
-                    actionBarButtonTapHandler(section: strongSelf.section, item: strongSelf.item, tableView: tableView, indexPath: indexPath, button: .Done)
+                    actionBarButtonTapHandler(strongSelf.section, strongSelf.item, tableView, indexPath, .done)
                 }
             }
         })
     }
     
-    public func cellWillAppear() {
+    open func cellWillAppear() {
         updateActionBarNavigationControl()
         self.textLabel?.text = item.text
         self.detailTextLabel?.text = item.detailText
@@ -106,28 +106,28 @@ public class TableViewCell: UITableViewCell {
     
     // MARK: Public methods
     //
-    public class func heightWithItem(item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> Float {
+    open class func heightWithItem(_ item: TableViewItem, tableView: UITableView, indexPath: IndexPath) -> Float {
         return item.height
     }
     
-    public class func estimatedHeightWithItem(item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> Float {
+    open class func estimatedHeightWithItem(_ item: TableViewItem, tableView: UITableView, indexPath: IndexPath) -> Float {
         return heightWithItem(item, tableView: tableView, indexPath: indexPath)
     }
     
-    public func updateActionBarNavigationControl() {
+    open func updateActionBarNavigationControl() {
         if let actionBar = self.actionBar {
-            actionBar.navigationControl.setEnabled(self.indexPathForPreviousResponder() != nil, forSegmentAtIndex: 0)
-            actionBar.navigationControl.setEnabled(self.indexPathForNextResponder() != nil, forSegmentAtIndex: 1)
+            actionBar.navigationControl.setEnabled(self.indexPathForPreviousResponder() != nil, forSegmentAt: 0)
+            actionBar.navigationControl.setEnabled(self.indexPathForNextResponder() != nil, forSegmentAt: 1)
         }
     }
     
-    public func responder() -> UIResponder? {
+    open func responder() -> UIResponder? {
         return nil
     }
     
-    public func indexPathForPreviousResponder() -> NSIndexPath? {
+    open func indexPathForPreviousResponder() -> IndexPath? {
         if let indexPath = self.indexPath {
-            for itemIndex in (0...indexPath.section).reverse() {
+            for itemIndex in (0...(indexPath as NSIndexPath).section).reversed() {
                 if let indexPath = self.tableViewDataManager.indexPathForPreviousResponderInSectionIndex(itemIndex, currentSection: self.section, currentItem: self.item) {
                     return indexPath;
                 }
@@ -136,9 +136,9 @@ public class TableViewCell: UITableViewCell {
         return nil
     }
     
-    public func indexPathForNextResponder() -> NSIndexPath? {
+    open func indexPathForNextResponder() -> IndexPath? {
         if let indexPath = self.indexPath, let datasource = self.tableViewDataManager.dataSource {
-            for itemIndex in indexPath.section..<datasource.sections.count {
+            for itemIndex in (indexPath as NSIndexPath).section..<datasource.sections.count {
                 if let indexPath = self.tableViewDataManager.indexPathForNextResponderInSectionIndex(itemIndex, currentSection: self.section, currentItem: self.item) {
                     return indexPath;
                 }
@@ -149,13 +149,13 @@ public class TableViewCell: UITableViewCell {
 
     // MARK: Overrides
     //
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
-        if let imageView = self.imageView, _ = imageView.image {
+        if let imageView = self.imageView, let _ = imageView.image {
             imageView.frame.origin.x = self.separatorInset.left
             if let textLabel = self.textLabel {
-                textLabel.frame.origin.x = CGRectGetMaxX(imageView.frame) + self.indentationWidth
-                textLabel.frame.size.width = CGRectGetWidth(self.contentView.frame) - textLabel.frame.origin.x - CGFloat(kYTMTableViewCellPadding)
+                textLabel.frame.origin.x = imageView.frame.maxX + self.indentationWidth
+                textLabel.frame.size.width = self.contentView.frame.width - textLabel.frame.origin.x - CGFloat(kYTMTableViewCellPadding)
             }
         }
         
@@ -164,7 +164,7 @@ public class TableViewCell: UITableViewCell {
         }
         
         if style.hasCustomBackgroundColor() || style.hasCustomBackgroundImage() {
-            self.backgroundColor = UIColor.clearColor()
+            self.backgroundColor = UIColor.clear
             if self.backgroundImageView == nil {
                 self.addBackgroundImage()
             }
@@ -176,31 +176,31 @@ public class TableViewCell: UITableViewCell {
             }
         }
         
-        if let backgroundImageView = self.backgroundImageView where style.hasCustomBackgroundColor()  {
+        if let backgroundImageView = self.backgroundImageView , style.hasCustomBackgroundColor()  {
             backgroundImageView.backgroundColor = style.backgroundColorForCellType(self.type)
         }
-        if let backgroundImageView = self.backgroundImageView where style.hasCustomBackgroundImage()  {
+        if let backgroundImageView = self.backgroundImageView , style.hasCustomBackgroundImage()  {
             backgroundImageView.image = style.backgroundImageForCellType(self.type)
         }
-        if let selectedBackgroundImageView = self.selectedBackgroundImageView where style.hasCustomSelectedBackgroundColor()  {
+        if let selectedBackgroundImageView = self.selectedBackgroundImageView , style.hasCustomSelectedBackgroundColor()  {
             selectedBackgroundImageView.backgroundColor = style.selectedBackgroundColorForCellType(self.type)
         }
-        if let selectedBackgroundImageView = self.selectedBackgroundImageView where style.hasCustomSelectedBackgroundImage()  {
+        if let selectedBackgroundImageView = self.selectedBackgroundImageView , style.hasCustomSelectedBackgroundImage()  {
             selectedBackgroundImageView.image = style.selectedBackgroundImageForCellType(self.type)
         }
     }
     
     // MARK: Private methods
     //
-    private func addBackgroundImage() {
+    fileprivate func addBackgroundImage() {
         self.backgroundImageView = {
-            let view = UIImageView(frame: CGRectMake(0, 0, self.contentView.bounds.size.width, self.contentView.bounds.size.height + 1))
-            view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            let view = UIImageView(frame: CGRect(x: 0, y: 0, width: self.contentView.bounds.size.width, height: self.contentView.bounds.size.height + 1))
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             return view
         }();
         self.backgroundView = {
             let view = UIView(frame: self.contentView.bounds)
-            view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             if let backgroundImageView = self.backgroundImageView {
                 view.addSubview(backgroundImageView)
             }
@@ -208,15 +208,15 @@ public class TableViewCell: UITableViewCell {
         }();
     }
     
-    private func addSelectedBackgroundImage() {
+    fileprivate func addSelectedBackgroundImage() {
         self.selectedBackgroundImageView = {
-            let view = UIImageView(frame: CGRectMake(0, 0, self.contentView.bounds.size.width, self.contentView.bounds.size.height + 1))
-            view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            let view = UIImageView(frame: CGRect(x: 0, y: 0, width: self.contentView.bounds.size.width, height: self.contentView.bounds.size.height + 1))
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             return view
         }();
         self.selectedBackgroundView = {
             let view = UIView(frame: self.contentView.bounds)
-            view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             if let selectedBackgroundImageView = self.selectedBackgroundImageView {
                 view.addSubview(selectedBackgroundImageView)
             }

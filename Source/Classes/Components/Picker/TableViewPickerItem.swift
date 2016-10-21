@@ -25,12 +25,12 @@
 
 import UIKit
 
-public class TableViewPickerItem: TableViewFormItem {
+open class TableViewPickerItem: TableViewFormItem {
    
-    public var value: [String]?
-    public var selected: Bool = false
-    public var placeholder: String?
-    public var options: [[String]]?
+    open var value: [String]?
+    open var selected: Bool = false
+    open var placeholder: String?
+    open var options: [[String]]?
     
     // MARK: Instance Lifecycle
     //

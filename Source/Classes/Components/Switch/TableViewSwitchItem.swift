@@ -25,13 +25,13 @@
 
 import UIKit
 
-public class TableViewSwitchItem: TableViewFormItem {
+open class TableViewSwitchItem: TableViewFormItem {
     
-    public var value: Bool = true
+    open var value: Bool = true
     
     // MARK: Handlers
     //
-    public var changeHandler: ((section: TableViewSection, item: TableViewSwitchItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
+    open var changeHandler: ((_ section: TableViewSection, _ item: TableViewSwitchItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
     
     // MARK: Instance Lifecycle
     //

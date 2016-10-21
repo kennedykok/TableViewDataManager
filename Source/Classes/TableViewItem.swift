@@ -28,55 +28,55 @@ import UIKit
 public typealias TableViewItemEditingStyle = UITableViewCellEditingStyle
 
 public enum TableViewEditingStatus {
-    case WillBeginEditing
-    case DidEndEditing
+    case willBeginEditing
+    case didEndEditing
 }
 
 public enum TableViewCellDisplayStatus {
-    case WillDisplay
-    case DidEndDisplaying
+    case willDisplay
+    case didEndDisplaying
 }
 
 public enum TableViewActionBarButton {
-    case Previous
-    case Next
-    case Done
+    case previous
+    case next
+    case done
 }
 
 public protocol TableViewItemFocusable {
     
 }
 
-public class TableViewItem: NSObject, UIAccessibilityIdentification {
+open class TableViewItem: NSObject, UIAccessibilityIdentification {
     
     // MARK: Variables
     //
-    public var text: String?
-    public var detailText: String?
-    public var section: TableViewSection?
-    public var image: UIImage?
-    public var highlightedImage: UIImage?
-    public var editingStyle: TableViewItemEditingStyle = .None
-    public var height: Float = Float(UITableViewAutomaticDimension)
-    public var accessibilityIdentifier: String?
-    public var indentationLevel: Int = 0
-    public var selectable = true
-    public var shouldIndentWhileEditing = true
-    public var configurationHandler: ((tableViewCell: TableViewCell) -> (Void))?
-    public var displayHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath, tableViewCell: TableViewCell, status: TableViewCellDisplayStatus) -> (Void))?
-    public var selectionHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var deselectionHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var accessoryButtonTapHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var insertionHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var deletionHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var deletionHandlerWithCompletion: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath, completionHandler: ((Void) -> (Void))) -> (Void))?
-    public var moveHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, sourceIndexPath: NSIndexPath, destinationIndexPath: NSIndexPath) -> (Bool))?
-    public var moveCompletionHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, sourceIndexPath: NSIndexPath, destinationIndexPath: NSIndexPath) -> (Void))?
-    public var cutHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var copyHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var pasteHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var editingHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath, status: TableViewEditingStatus) -> (Void))?
-    public var actionBarButtonTapHandler: ((section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath, button: TableViewActionBarButton) -> (Void))?
+    open var text: String?
+    open var detailText: String?
+    open var section: TableViewSection?
+    open var image: UIImage?
+    open var highlightedImage: UIImage?
+    open var editingStyle: TableViewItemEditingStyle = .none
+    open var height: Float = Float(UITableViewAutomaticDimension)
+    open var accessibilityIdentifier: String?
+    open var indentationLevel: Int = 0
+    open var selectable = true
+    open var shouldIndentWhileEditing = true
+    open var configurationHandler: ((_ tableViewCell: TableViewCell) -> (Void))?
+    open var displayHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath, _ tableViewCell: TableViewCell, _ status: TableViewCellDisplayStatus) -> (Void))?
+    open var selectionHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var deselectionHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var accessoryButtonTapHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var insertionHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var deletionHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var deletionHandlerWithCompletion: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath, _ completionHandler: ((Void) -> (Void))) -> (Void))?
+    open var moveHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ sourceIndexPath: IndexPath, _ destinationIndexPath: IndexPath) -> (Bool))?
+    open var moveCompletionHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ sourceIndexPath: IndexPath, _ destinationIndexPath: IndexPath) -> (Void))?
+    open var cutHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var copyHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var pasteHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var editingHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath, _ status: TableViewEditingStatus) -> (Void))?
+    open var actionBarButtonTapHandler: ((_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath, _ button: TableViewActionBarButton) -> (Void))?
     
     // MARK: Lifecycle
     //
@@ -85,17 +85,17 @@ public class TableViewItem: NSObject, UIAccessibilityIdentification {
         self.text = text
     }
     
-    public convenience init(text: String?, configurationHandler: (tableViewCell: TableViewCell) -> (Void)) {
+    public convenience init(text: String?, configurationHandler: @escaping (_ tableViewCell: TableViewCell) -> (Void)) {
         self.init(text: text)
         self.configurationHandler = configurationHandler
     }
     
-    public convenience init(text: String?, selectionHandler: (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void)) {
+    public convenience init(text: String?, selectionHandler: @escaping (_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void)) {
         self.init(text: text)
         self.selectionHandler = selectionHandler
     }
     
-    public convenience init(text: String?, configurationHandler: (tableViewCell: TableViewCell) -> (Void), selectionHandler: (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void)) {
+    public convenience init(text: String?, configurationHandler: @escaping (_ tableViewCell: TableViewCell) -> (Void), selectionHandler: @escaping (_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void)) {
         self.init(text: text)
         self.configurationHandler = configurationHandler
         self.selectionHandler = selectionHandler
@@ -106,19 +106,19 @@ public class TableViewItem: NSObject, UIAccessibilityIdentification {
         self.image = image
     }
     
-    public convenience init(text: String?, image: UIImage, configurationHandler: (tableViewCell: TableViewCell) -> (Void)) {
+    public convenience init(text: String?, image: UIImage, configurationHandler: @escaping (_ tableViewCell: TableViewCell) -> (Void)) {
         self.init(text: text)
         self.image = image
         self.configurationHandler = configurationHandler
     }
     
-    public convenience init(text: String?, image: UIImage, selectionHandler: (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void)) {
+    public convenience init(text: String?, image: UIImage, selectionHandler: @escaping (_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void)) {
         self.init(text: text)
         self.selectionHandler = selectionHandler
         self.image = image
     }
     
-    public convenience init(text: String?, image: UIImage, configurationHandler: (tableViewCell: TableViewCell) -> (Void), selectionHandler: (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void)) {
+    public convenience init(text: String?, image: UIImage, configurationHandler: @escaping (_ tableViewCell: TableViewCell) -> (Void), selectionHandler: @escaping (_ section: TableViewSection, _ item: TableViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void)) {
         self.init(text: text)
         self.image = image
         self.configurationHandler = configurationHandler

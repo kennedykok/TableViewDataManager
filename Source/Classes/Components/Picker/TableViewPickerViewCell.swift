@@ -25,29 +25,29 @@
 
 import UIKit
 
-public class TableViewPickerViewCell: TableViewFormCell, UIPickerViewDelegate, UIPickerViewDataSource {
+open class TableViewPickerViewCell: TableViewFormCell, UIPickerViewDelegate, UIPickerViewDataSource {
 
     // MARK: Public variables
     //
-    public override var item: TableViewItem! { get { return pickerViewItem } set { pickerViewItem = newValue as! TableViewPickerViewItem } }
+    open override var item: TableViewItem! { get { return pickerViewItem } set { pickerViewItem = newValue as! TableViewPickerViewItem } }
     
     // MARK: Private variables
     //
-    private var pickerViewItem: TableViewPickerViewItem!
+    fileprivate var pickerViewItem: TableViewPickerViewItem!
     
     // MARK: Interface builder outlets
     //
-    @IBOutlet public private(set) var pickerView: UIPickerView!
+    @IBOutlet open fileprivate(set) var pickerView: UIPickerView!
     
     // MARK: View Lifecycle
     //
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
         guard let pickerItem = self.pickerViewItem.pickerItem, let value = pickerItem.value, let options = pickerItem.options else {
             return
         }
-        for (component, item) in options.enumerate() {
-            if let index = item.indexOf(value[component]) {
+        for (component, item) in options.enumerated() {
+            if let index = item.index(of: value[component]) {
                 self.pickerView.selectRow(index, inComponent: component, animated: false)
             }
         }
@@ -56,19 +56,19 @@ public class TableViewPickerViewCell: TableViewFormCell, UIPickerViewDelegate, U
     
     // MARK: <UIPickerViewDelegate> methods
     //
-    public func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        guard let pickerItem = self.pickerViewItem.pickerItem, options = pickerItem.options else {
+    open func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let pickerItem = self.pickerViewItem.pickerItem, let options = pickerItem.options else {
             return nil
         }
         return options[component][row]
     }
     
-    public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if let pickerItem = self.pickerViewItem.pickerItem, options = pickerItem.options {
+    open func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if let pickerItem = self.pickerViewItem.pickerItem, let options = pickerItem.options {
             pickerItem.value = {
                 var value : [String] = []
-                for (component, item) in options.enumerate() {
-                    value.append(item[pickerView.selectedRowInComponent(component)])
+                for (component, item) in options.enumerated() {
+                    value.append(item[pickerView.selectedRow(inComponent: component)])
                 }
                 return value
             }()
@@ -76,20 +76,20 @@ public class TableViewPickerViewCell: TableViewFormCell, UIPickerViewDelegate, U
         guard let changeHandler = self.pickerViewItem.changeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath else {
             return
         }
-        changeHandler(section: self.section, item: self.pickerViewItem, tableView: tableView, indexPath: indexPath)
+        changeHandler(self.section, self.pickerViewItem, tableView, indexPath)
     }
     
     // MARK: <UIPickerViewDataSource> methods
     //
-    public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        guard let pickerItem = self.pickerViewItem.pickerItem, options = pickerItem.options else {
+    open func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        guard let pickerItem = self.pickerViewItem.pickerItem, let options = pickerItem.options else {
             return 0
         }
         return options.count
     }
     
-    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        guard let pickerItem = self.pickerViewItem.pickerItem, options = pickerItem.options else {
+    open func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let pickerItem = self.pickerViewItem.pickerItem, let options = pickerItem.options else {
             return 0
         }
         return options[component].count

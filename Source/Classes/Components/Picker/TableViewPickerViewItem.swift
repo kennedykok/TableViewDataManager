@@ -25,12 +25,12 @@
 
 import UIKit
 
-public class TableViewPickerViewItem: TableViewFormItem {
+open class TableViewPickerViewItem: TableViewFormItem {
     
-    public weak var pickerItem: TableViewPickerItem?
+    open weak var pickerItem: TableViewPickerItem?
     
     // MARK: Handlers
     //
-    public var changeHandler: ((section: TableViewSection, item: TableViewPickerViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
+    open var changeHandler: ((_ section: TableViewSection, _ item: TableViewPickerViewItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
 }
 

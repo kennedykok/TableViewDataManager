@@ -25,6 +25,6 @@
 
 import UIKit
 
-public class TableViewFormItem: TableViewItem {
+open class TableViewFormItem: TableViewItem {
     
 }

@@ -25,32 +25,32 @@
 
 import UIKit
 
-public class TableViewTextViewCell: TableViewFormCell, UITextViewDelegate {
+open class TableViewTextViewCell: TableViewFormCell, UITextViewDelegate {
 
     // MARK: Public variables
     //
-    public override var item: TableViewItem! { get { return textViewItem } set { textViewItem = newValue as! TableViewTextViewItem } }
+    open override var item: TableViewItem! { get { return textViewItem } set { textViewItem = newValue as! TableViewTextViewItem } }
     
     // MARK: Private variables
     //
-    private var textViewItem: TableViewTextViewItem!
+    fileprivate var textViewItem: TableViewTextViewItem!
     
     // MARK: Interface builder outlets
     //
-    @IBOutlet public private(set) var textView: UITextView!
+    @IBOutlet open fileprivate(set) var textView: UITextView!
     
     // MARK: View Lifecycle
     //
-    public override func cellDidLoad() {
+    open override func cellDidLoad() {
         super.cellDidLoad()
         self.textView.textContainer.lineFragmentPadding = 0
-        self.textView.textContainerInset = UIEdgeInsetsZero
+        self.textView.textContainerInset = UIEdgeInsets.zero
     }
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
         self.textView.inputAccessoryView = self.textViewItem.showsActionBar ? self.actionBar : nil
-        self.textView.editable = textViewItem.editable
+        self.textView.isEditable = textViewItem.editable
         self.textView.text = textViewItem.value
         self.textView.autocapitalizationType = self.textViewItem.autocapitalizationType
         self.textView.autocorrectionType = self.textViewItem.autocorrectionType
@@ -61,38 +61,38 @@ public class TableViewTextViewCell: TableViewFormCell, UITextViewDelegate {
         self.textView.enablesReturnKeyAutomatically = self.textViewItem.enablesReturnKeyAutomatically
     }
     
-    public override func responder() -> UIResponder? {
+    open override func responder() -> UIResponder? {
         return self.textView
     }
     
     // MARK: <UITextViewDelegate> methods
     //
-    public func textViewDidBeginEditing(textView: UITextView) {
+    open func textViewDidBeginEditing(_ textView: UITextView) {
         if let beginEditingHandler = self.textViewItem.beginEditingHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            beginEditingHandler(section: self.section, item: self.textViewItem, tableView: tableView, indexPath: indexPath)
+            beginEditingHandler(self.section, self.textViewItem, tableView, indexPath)
         }
         self.updateActionBarNavigationControl()
     }
     
-    public func textViewDidEndEditing(textView: UITextView) {
+    open func textViewDidEndEditing(_ textView: UITextView) {
         if let endEditingHandler = self.textViewItem.endEditingHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            endEditingHandler(section: self.section, item: self.textViewItem, tableView: tableView, indexPath: indexPath)
+            endEditingHandler(self.section, self.textViewItem, tableView, indexPath)
         }
     }
     
-    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if let returnKeyHandler = self.textViewItem.returnKeyHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath where text == "\n" {
+    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if let returnKeyHandler = self.textViewItem.returnKeyHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath , text == "\n" {
             textView.resignFirstResponder()
-            returnKeyHandler(section: self.section, item: self.textViewItem, tableView: tableView, indexPath: indexPath)
+            returnKeyHandler(self.section, self.textViewItem, tableView, indexPath)
             return false
         }
         return true
     }
     
-    public func textViewDidChange(textView: UITextView) {
+    open func textViewDidChange(_ textView: UITextView) {
         self.textViewItem.value = textView.text
         if let changeHandler = self.textViewItem.changeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath {
-            changeHandler(section: self.section, item: self.textViewItem, tableView: tableView, indexPath: indexPath)
+            changeHandler(self.section, self.textViewItem, tableView, indexPath)
         }
     }
 }

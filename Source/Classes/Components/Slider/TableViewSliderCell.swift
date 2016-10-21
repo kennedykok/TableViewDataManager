@@ -25,38 +25,38 @@
 
 import UIKit
 
-public class TableViewSliderCell: TableViewFormCell {
+open class TableViewSliderCell: TableViewFormCell {
 
     // MARK: Public variables
     //
-    public override var item: TableViewItem! { get { return sliderItem } set { sliderItem = newValue as! TableViewSliderItem } }
+    open override var item: TableViewItem! { get { return sliderItem } set { sliderItem = newValue as! TableViewSliderItem } }
     
     // MARK: Private variables
     //
-    private var sliderItem: TableViewSliderItem!
+    fileprivate var sliderItem: TableViewSliderItem!
     
     // MARK: Interface builder outlets
     //
-    @IBOutlet public private(set) var slider: UISlider!
+    @IBOutlet open fileprivate(set) var slider: UISlider!
     
     // MARK: View Lifecycle
     //
-    public override func cellDidLoad() {
+    open override func cellDidLoad() {
         super.cellDidLoad()
     }
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
         slider.value = self.sliderItem.value
     }
     
     // MARK: Actions
     //
-    @IBAction func sliderValueChanged(sender: UISlider!) {
+    @IBAction func sliderValueChanged(_ sender: UISlider!) {
         self.sliderItem.value = sender.value
         guard let changeHandler = self.sliderItem.changeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath else {
             return
         }
-        changeHandler(section: self.section, item: self.sliderItem, tableView: tableView, indexPath: indexPath)
+        changeHandler(self.section, self.sliderItem, tableView, indexPath)
     }
 }

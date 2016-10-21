@@ -26,85 +26,85 @@
 import UIKit
 
 public enum TableViewCellType {
-    case First
-    case Middle
-    case Last
-    case Single
-    case Any
+    case first
+    case middle
+    case last
+    case single
+    case any
 }
 
-public class TableViewCellStyle {
+open class TableViewCellStyle {
     
-    private var backgroundImages: [TableViewCellType:UIImage] = [:]
-    private var selectedBackgroundImages: [TableViewCellType:UIImage] = [:]
-    private var backgroundColors: [TableViewCellType:UIColor] = [:]
-    private var selectedBackgroundColors: [TableViewCellType:UIColor] = [:]
+    fileprivate var backgroundImages: [TableViewCellType:UIImage] = [:]
+    fileprivate var selectedBackgroundImages: [TableViewCellType:UIImage] = [:]
+    fileprivate var backgroundColors: [TableViewCellType:UIColor] = [:]
+    fileprivate var selectedBackgroundColors: [TableViewCellType:UIColor] = [:]
     
     public init() {
     
     }
     
-    public func hasCustomBackgroundImage() -> Bool {
-        return self.backgroundImageForCellType(.Any) != nil || self.backgroundImageForCellType(.First) != nil || self.backgroundImageForCellType(.Middle) != nil || self.backgroundImageForCellType(.Last) != nil || self.backgroundImageForCellType(.Single) != nil
+    open func hasCustomBackgroundImage() -> Bool {
+        return self.backgroundImageForCellType(.any) != nil || self.backgroundImageForCellType(.first) != nil || self.backgroundImageForCellType(.middle) != nil || self.backgroundImageForCellType(.last) != nil || self.backgroundImageForCellType(.single) != nil
     }
     
-    public func hasCustomBackgroundColor() -> Bool {
-        return self.backgroundColorForCellType(.Any) != nil || self.backgroundColorForCellType(.First) != nil || self.backgroundColorForCellType(.Middle) != nil || self.backgroundColorForCellType(.Last) != nil || self.backgroundColorForCellType(.Single) != nil
+    open func hasCustomBackgroundColor() -> Bool {
+        return self.backgroundColorForCellType(.any) != nil || self.backgroundColorForCellType(.first) != nil || self.backgroundColorForCellType(.middle) != nil || self.backgroundColorForCellType(.last) != nil || self.backgroundColorForCellType(.single) != nil
     }
     
-    public func backgroundImageForCellType(cellType: TableViewCellType) -> UIImage? {
+    open func backgroundImageForCellType(_ cellType: TableViewCellType) -> UIImage? {
         let image = self.backgroundImages[cellType]
-        if image == nil && cellType != .Any {
-            return self.backgroundImages[.Any]
+        if image == nil && cellType != .any {
+            return self.backgroundImages[.any]
         }
         return image
     }
     
-    public func backgroundColorForCellType(cellType: TableViewCellType) -> UIColor? {
+    open func backgroundColorForCellType(_ cellType: TableViewCellType) -> UIColor? {
         let backgroundColor = self.backgroundColors[cellType]
-        if backgroundColor == nil && cellType != .Any {
-            return self.backgroundColors[.Any]
+        if backgroundColor == nil && cellType != .any {
+            return self.backgroundColors[.any]
         }
         return backgroundColor
     }
     
-    public func setBackgroundImage(image: UIImage, forCellType cellType: TableViewCellType) {
+    open func setBackgroundImage(_ image: UIImage, forCellType cellType: TableViewCellType) {
         self.backgroundImages[cellType] = image
     }
     
-    public func setBackgroundColor(color: UIColor, forCellType cellType: TableViewCellType) {
+    open func setBackgroundColor(_ color: UIColor, forCellType cellType: TableViewCellType) {
         self.backgroundColors[cellType] = color
     }
     
-    public func hasCustomSelectedBackgroundImage() -> Bool {
-        return self.selectedBackgroundImageForCellType(.Any) != nil || self.selectedBackgroundImageForCellType(.First) != nil || self.selectedBackgroundImageForCellType(.Middle) != nil || self.selectedBackgroundImageForCellType(.Last) != nil || self.selectedBackgroundImageForCellType(.Single) != nil
+    open func hasCustomSelectedBackgroundImage() -> Bool {
+        return self.selectedBackgroundImageForCellType(.any) != nil || self.selectedBackgroundImageForCellType(.first) != nil || self.selectedBackgroundImageForCellType(.middle) != nil || self.selectedBackgroundImageForCellType(.last) != nil || self.selectedBackgroundImageForCellType(.single) != nil
     }
     
-    public func hasCustomSelectedBackgroundColor() -> Bool {
-        return self.selectedBackgroundColorForCellType(.Any) != nil || self.selectedBackgroundColorForCellType(.First) != nil || self.selectedBackgroundColorForCellType(.Middle) != nil || self.selectedBackgroundColorForCellType(.Last) != nil || self.selectedBackgroundColorForCellType(.Single) != nil
+    open func hasCustomSelectedBackgroundColor() -> Bool {
+        return self.selectedBackgroundColorForCellType(.any) != nil || self.selectedBackgroundColorForCellType(.first) != nil || self.selectedBackgroundColorForCellType(.middle) != nil || self.selectedBackgroundColorForCellType(.last) != nil || self.selectedBackgroundColorForCellType(.single) != nil
     }
     
-    public func selectedBackgroundImageForCellType(cellType: TableViewCellType) -> UIImage? {
+    open func selectedBackgroundImageForCellType(_ cellType: TableViewCellType) -> UIImage? {
         let image = self.selectedBackgroundImages[cellType]
-        if image == nil && cellType != .Any {
-            return self.selectedBackgroundImages[.Any]
+        if image == nil && cellType != .any {
+            return self.selectedBackgroundImages[.any]
         }
         return image
     }
     
-    public func selectedBackgroundColorForCellType(cellType: TableViewCellType) -> UIColor? {
+    open func selectedBackgroundColorForCellType(_ cellType: TableViewCellType) -> UIColor? {
         let backgroundColor = self.selectedBackgroundColors[cellType]
-        if backgroundColor == nil && cellType != .Any {
-            return self.selectedBackgroundColors[.Any]
+        if backgroundColor == nil && cellType != .any {
+            return self.selectedBackgroundColors[.any]
         }
         return backgroundColor
     }
     
-    public func setSelectedBackgroundImage(image: UIImage, forCellType cellType: TableViewCellType) {
+    open func setSelectedBackgroundImage(_ image: UIImage, forCellType cellType: TableViewCellType) {
         self.selectedBackgroundImages[cellType] = image
     }
     
-    public func setSelectedBackgroundColor(color: UIColor, forCellType cellType: TableViewCellType) {
+    open func setSelectedBackgroundColor(_ color: UIColor, forCellType cellType: TableViewCellType) {
         self.selectedBackgroundColors[cellType] = color
     }
 }

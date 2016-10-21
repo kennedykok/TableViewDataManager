@@ -25,58 +25,58 @@
 
 import UIKit
 
-public class TableViewPickerCell: TableViewFormCell {
+open class TableViewPickerCell: TableViewFormCell {
     
     // MARK: Public variables
     //
-    public override var item: TableViewItem! { get { return pickerItem } set { pickerItem = newValue as! TableViewPickerItem } }
+    open override var item: TableViewItem! { get { return pickerItem } set { pickerItem = newValue as! TableViewPickerItem } }
     
     // MARK: Private variables
     //
-    private var pickerItem: TableViewPickerItem!
+    fileprivate var pickerItem: TableViewPickerItem!
     
-    private lazy var pickerViewItem: TableViewPickerViewItem = TableViewPickerViewItem()
+    fileprivate lazy var pickerViewItem: TableViewPickerViewItem = TableViewPickerViewItem()
     
     // MARK: View lifecycle
     //
-    public override func cellDidLoad() {
+    open override func cellDidLoad() {
         super.cellDidLoad()
-        self.item.selectionHandler = { (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void) in
+        self.item.selectionHandler = { (section: TableViewSection, item: TableViewItem, tableView: UITableView, indexPath: IndexPath) -> (Void) in
             let pickerItem = item as! TableViewPickerItem
-            guard let indexOfItem = section.items.indexOf(item) else {
+            guard let indexOfItem = section.items.index(of: item) else {
                 return
             }
-            let newItemIndexPath = NSIndexPath(forRow: indexOfItem + 1, inSection: indexPath.section)
-            pickerItem.selected = newItemIndexPath.row < section.items.count && section.items[newItemIndexPath.row] is TableViewPickerViewItem
+            let newItemIndexPath = IndexPath(row: indexOfItem + 1, section: (indexPath as NSIndexPath).section)
+            pickerItem.selected = (newItemIndexPath as NSIndexPath).row < section.items.count && section.items[(newItemIndexPath as NSIndexPath).row] is TableViewPickerViewItem
             if pickerItem.selected {
-                section.items.removeAtIndex(newItemIndexPath.row)
-                tableView.deleteRowsAtIndexPaths([newItemIndexPath], withRowAnimation: .Top)
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                section.items.remove(at: (newItemIndexPath as NSIndexPath).row)
+                tableView.deleteRows(at: [newItemIndexPath], with: .top)
+                tableView.deselectRow(at: indexPath, animated: true)
             } else {
-                section.items.insert(self.pickerViewItem, atIndex: newItemIndexPath.row)
-                tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newItemIndexPath.row, inSection: indexPath.section)], withRowAnimation: .Fade)
+                section.items.insert(self.pickerViewItem, at: (newItemIndexPath as NSIndexPath).row)
+                tableView.insertRows(at: [IndexPath(row: (newItemIndexPath as NSIndexPath).row, section: (indexPath as NSIndexPath).section)], with: .fade)
             }
         }
     }
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
-        self.selectionStyle = .Default
+        self.selectionStyle = .default
         self.setSelected(self.pickerItem.selected, animated: false)
         self.pickerViewItem.pickerItem = self.pickerItem
-        self.pickerViewItem.changeHandler = { [unowned self] (section: TableViewSection, item: TableViewPickerViewItem, tableView: UITableView, indexPath: NSIndexPath) in
+        self.pickerViewItem.changeHandler = { [unowned self] (section: TableViewSection, item: TableViewPickerViewItem, tableView: UITableView, indexPath: IndexPath) in
             self.updateDetailLabelText()
         }
         updateDetailLabelText()
     }
     
-    private func updateDetailLabelText() {
+    fileprivate func updateDetailLabelText() {
         guard let detailTextLabel = self.detailTextLabel else {
             return
         }
         
         if let value = self.pickerItem.value {
-            detailTextLabel.text = value.joinWithSeparator(", ")
+            detailTextLabel.text = value.joined(separator: ", ")
         } else {
             detailTextLabel.text = self.pickerItem.placeholder
         }

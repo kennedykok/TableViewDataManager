@@ -25,23 +25,23 @@
 
 import UIKit
 
-public class TableViewFormCell: TableViewCell {
+open class TableViewFormCell: TableViewCell {
 
     @IBOutlet var labelCenterYConstraint: NSLayoutConstraint?
     @IBOutlet var labelRightMarginConstraint: NSLayoutConstraint?
     @IBOutlet var labelWidthConstraint: NSLayoutConstraint?
-    @IBOutlet public private(set) var titleLabel: UILabel?
+    @IBOutlet open fileprivate(set) var titleLabel: UILabel?
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         updateActionBarNavigationControl()
-        self.selectionStyle = .None
+        self.selectionStyle = .none
         
         guard let titleLabel = self.titleLabel else {
             return
         }
         titleLabel.text = self.item.text
         if let labelRightMarginConstraint = self.labelRightMarginConstraint {
-            if let text = self.item.text where text.characters.count > 0 {
+            if let text = self.item.text , text.characters.count > 0 {
                 labelRightMarginConstraint.constant = 13
             } else {
                 labelRightMarginConstraint.constant = 0
@@ -49,14 +49,14 @@ public class TableViewFormCell: TableViewCell {
         }
     }
     
-    public override func setSelected(selected: Bool, animated: Bool) {
+    open override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        if let responder = self.responder() where selected {
+        if let responder = self.responder() , selected {
             responder.becomeFirstResponder()
         }
     }
     
-    public override func updateConstraints() {
+    open override func updateConstraints() {
         super.updateConstraints()
         
         guard let titleLabel = self.titleLabel else {
@@ -66,14 +66,14 @@ public class TableViewFormCell: TableViewCell {
         self.updateTitleLabelConstraints(titleLabel)
     }
     
-    private func updateTitleLabelConstraints(titleLabel: UILabel) {
+    fileprivate func updateTitleLabelConstraints(_ titleLabel: UILabel) {
         if let labelWidthConstraint = self.labelWidthConstraint {
             if self.item.text != nil && self.item is TableViewFormItem {
                 var minWidth: Float = 0
                 for item in self.section.items {
-                    if let text = item.text where item is TableViewFormItem {
-                        let width = Float(NSString(string: text).boundingRectWithSize(CGSize(width: self.frame.size.width, height: CGFloat(DBL_MAX)),
-                            options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+                    if let text = item.text , item is TableViewFormItem {
+                        let width = Float(NSString(string: text).boundingRect(with: CGSize(width: self.frame.size.width, height: CGFloat(DBL_MAX)),
+                            options: NSStringDrawingOptions.usesLineFragmentOrigin,
                             attributes: [NSFontAttributeName: titleLabel.font],
                             context: nil).size.width)
                         minWidth = max(width, minWidth)

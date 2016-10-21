@@ -25,8 +25,8 @@
 
 import UIKit
 
-public class TableViewDataSource {
+open class TableViewDataSource {
     
-    public var sections: [TableViewSection] = []
+    open var sections: [TableViewSection] = []
     
 }

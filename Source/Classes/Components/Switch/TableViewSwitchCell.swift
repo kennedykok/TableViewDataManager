@@ -25,35 +25,35 @@
 
 import UIKit
 
-public class TableViewSwitchCell: TableViewFormCell {
+open class TableViewSwitchCell: TableViewFormCell {
 
     // Public variables
     //
-    public override var item: TableViewItem! { get { return switchItem } set { switchItem = newValue as! TableViewSwitchItem } }
+    open override var item: TableViewItem! { get { return switchItem } set { switchItem = newValue as! TableViewSwitchItem } }
     
     // Private variables
     //
-    private var switchItem: TableViewSwitchItem!
+    fileprivate var switchItem: TableViewSwitchItem!
     
     // Interface builder outlets
     //
-    @IBOutlet public private(set) var switchControl: UISwitch!
+    @IBOutlet open fileprivate(set) var switchControl: UISwitch!
     
-    public override func cellDidLoad() {
+    open override func cellDidLoad() {
         super.cellDidLoad()
     }
     
-    public override func cellWillAppear() {
+    open override func cellWillAppear() {
         super.cellWillAppear()
-        self.switchControl.on = self.switchItem.value
+        self.switchControl.isOn = self.switchItem.value
     }
     
-    @IBAction func switchValueChanged(sender: UISwitch!) {
-        self.switchItem.value = sender.on
+    @IBAction func switchValueChanged(_ sender: UISwitch!) {
+        self.switchItem.value = sender.isOn
         guard let changeHandler = self.switchItem.changeHandler, let tableView = self.tableViewDataManager.tableView, let indexPath = self.indexPath else {
             return
         }
-        changeHandler(section: self.section, item: self.switchItem, tableView: tableView, indexPath: indexPath)
+        changeHandler(self.section, self.switchItem, tableView, indexPath)
     }
     
 }

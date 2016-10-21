@@ -25,13 +25,13 @@
 
 import UIKit
 
-public class TableViewDateTimeItem: TableViewFormItem {
+open class TableViewDateTimeItem: TableViewFormItem {
    
-    public var value: NSDate?
-    public var selected: Bool = false
-    public var pickerStartDate: NSDate? // date to be used for the picker when the value is not set; defaults to current date when not specified
-    public var placeholder: String?
-    public var format: String {
+    open var value: Date?
+    open var selected: Bool = false
+    open var pickerStartDate: Date? // date to be used for the picker when the value is not set; defaults to current date when not specified
+    open var placeholder: String?
+    open var format: String {
         get {
             return self.dateFormatter.dateFormat
         }
@@ -39,21 +39,21 @@ public class TableViewDateTimeItem: TableViewFormItem {
             self.dateFormatter.dateFormat = newValue
         }
     }
-    public var datePickerMode: UIDatePickerMode = .DateAndTime
+    open var datePickerMode: UIDatePickerMode = .dateAndTime
     
-    public var locale: NSLocale? // default is [NSLocale currentLocale]. setting nil returns to default
-    public var calendar: NSCalendar? // default is [NSCalendar currentCalendar]. setting nil returns to default
-    public var timeZone: NSTimeZone? // default is nil. use current time zone or time zone from calendar
+    open var locale: Locale? // default is [NSLocale currentLocale]. setting nil returns to default
+    open var calendar: Calendar? // default is [NSCalendar currentCalendar]. setting nil returns to default
+    open var timeZone: TimeZone? // default is nil. use current time zone or time zone from calendar
     
-    public var minimumDate: NSDate? // specify min/max date range. default is nil. When min > max, the values are ignored. Ignored in countdown timer mode
-    public var maximumDate: NSDate? // default is nil
-    public var minuteInterval: NSInteger = 1 // display minutes wheel with interval. interval must be evenly divided into 60. default is 1. min is 1, max is 30
+    open var minimumDate: Date? // specify min/max date range. default is nil. When min > max, the values are ignored. Ignored in countdown timer mode
+    open var maximumDate: Date? // default is nil
+    open var minuteInterval: NSInteger = 1 // display minutes wheel with interval. interval must be evenly divided into 60. default is 1. min is 1, max is 30
     
-    public lazy var dateFormatter: NSDateFormatter = NSDateFormatter()
+    open lazy var dateFormatter: DateFormatter = DateFormatter()
     
     // MARK: Instance Lifecycle
     //
-    public convenience init(text: String?, placeholder: String?, value: NSDate!, format: String!, datePickerMode: UIDatePickerMode!) {
+    public convenience init(text: String?, placeholder: String?, value: Date!, format: String!, datePickerMode: UIDatePickerMode!) {
         self.init(text: text)
         self.value = value
         self.placeholder = placeholder

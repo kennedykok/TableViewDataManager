@@ -25,29 +25,29 @@
 
 import UIKit
 
-public class TableViewTextFieldItem: TableViewFormItem, TableViewItemFocusable {
+open class TableViewTextFieldItem: TableViewFormItem, TableViewItemFocusable {
    
-    public var value: String?
-    public var placeholder: String?
-    public var charactersLimit: Int?
-    public var secureTextEntry = false
-    public var showsActionBar = true
+    open var value: String?
+    open var placeholder: String?
+    open var charactersLimit: Int?
+    open var secureTextEntry = false
+    open var showsActionBar = true
     
     // MARK: Keyboard
     //
-    public var autocapitalizationType = UITextAutocapitalizationType.Sentences // default is UITextAutocapitalizationTypeSentences
-    public var autocorrectionType = UITextAutocorrectionType.Default // default is UITextAutocorrectionTypeDefault
-    public var spellCheckingType = UITextSpellCheckingType.Default // default is UITextSpellCheckingTypeDefault
-    public var keyboardType = UIKeyboardType.Default // default is UIKeyboardTypeDefault
-    public var keyboardAppearance = UIKeyboardAppearance.Default // default is UIKeyboardAppearanceDefault
-    public var returnKeyType = UIReturnKeyType.Default // default is UIReturnKeyDefault (See note under UIReturnKeyType enum)
-    public var enablesReturnKeyAutomatically = false // default is NO (when YES, will automatically disable return key when text widget has zero-length contents, and will automatically enable when text widget has non-zero-length contents)
+    open var autocapitalizationType = UITextAutocapitalizationType.sentences // default is UITextAutocapitalizationTypeSentences
+    open var autocorrectionType = UITextAutocorrectionType.default // default is UITextAutocorrectionTypeDefault
+    open var spellCheckingType = UITextSpellCheckingType.default // default is UITextSpellCheckingTypeDefault
+    open var keyboardType = UIKeyboardType.default // default is UIKeyboardTypeDefault
+    open var keyboardAppearance = UIKeyboardAppearance.default // default is UIKeyboardAppearanceDefault
+    open var returnKeyType = UIReturnKeyType.default // default is UIReturnKeyDefault (See note under UIReturnKeyType enum)
+    open var enablesReturnKeyAutomatically = false // default is NO (when YES, will automatically disable return key when text widget has zero-length contents, and will automatically enable when text widget has non-zero-length contents)
 
     // MARK: Handlers
     //
-    public var changeHandler: ((section: TableViewSection, item: TableViewTextFieldItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
-    public var changeCharacterInRangeHandler: ((section: TableViewSection, item: TableViewTextFieldItem, tableView: UITableView, indexPath: NSIndexPath, range: NSRange, replacementString: String) -> (Bool))?
-    public var returnKeyHandler: ((section: TableViewSection, item: TableViewTextFieldItem, tableView: UITableView, indexPath: NSIndexPath) -> (Void))?
+    open var changeHandler: ((_ section: TableViewSection, _ item: TableViewTextFieldItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
+    open var changeCharacterInRangeHandler: ((_ section: TableViewSection, _ item: TableViewTextFieldItem, _ tableView: UITableView, _ indexPath: IndexPath, _ range: NSRange, _ replacementString: String) -> (Bool))?
+    open var returnKeyHandler: ((_ section: TableViewSection, _ item: TableViewTextFieldItem, _ tableView: UITableView, _ indexPath: IndexPath) -> (Void))?
 
     // MARK: Instance Lifecycle
     //
